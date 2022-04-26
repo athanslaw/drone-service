@@ -3,6 +3,7 @@ package com.athanasius.droneservice.services;
 import com.athanasius.droneservice.dto.DronesDto;
 import com.athanasius.droneservice.enums.DroneModel;
 import com.athanasius.droneservice.enums.DroneState;
+import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.response.DronesResponse;
 import com.athanasius.droneservice.services.impl.DronesServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -23,7 +24,10 @@ public class DronesServiceTest {
 
   @Test
   public void registerDrone(){
-    dronesService.registerDrone(new DronesDto("SNO1234567865", DroneModel.CRUISER_WEIGHT, 200L, 0.95, DroneState.IDLE));
+    try {
+      dronesService.registerDrone(
+          new DronesDto("SNO1234567865", "CRUISER_WEIGHT", 200L, 0.95, "IDLE"));
+    }catch (BadRequestException e){}
   }
 
   @Test
