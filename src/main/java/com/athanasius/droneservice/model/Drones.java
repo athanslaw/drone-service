@@ -6,14 +6,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Drones{
 
     @javax.persistence.Id
-    @Column(name = "serial_no", columnDefinition = "VARCHAR(20) NOT NULL")
+    @Column(name = "serial_no", columnDefinition = "VARCHAR(110) NOT NULL")
     private String serialNo;
 
     // used Enums to manage the model with the assumption that the ordering of the model will not change

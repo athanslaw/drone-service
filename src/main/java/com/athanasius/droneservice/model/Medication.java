@@ -1,14 +1,16 @@
 package com.athanasius.droneservice.model;
 
 import com.athanasius.droneservice.enums.DroneModel;
-import com.athanasius.droneservice.enums.DroneState;
-import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Medication {
 
     @javax.persistence.Id
