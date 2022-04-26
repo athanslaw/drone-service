@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/drone/api/v1/")
-public class DroneController {
+@RequestMapping("/dispatch/api/v1/")
+public class DispatchController {
 
   @GetMapping(path= "/health", produces = "application/json")
   public String getAvailableDroneForLoading() {
