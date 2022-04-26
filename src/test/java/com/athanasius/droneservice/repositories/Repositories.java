@@ -1,4 +1,4 @@
-package com.athanasius.droneservice;
+package com.athanasius.droneservice.repositories;
 
 import com.athanasius.droneservice.enums.DroneModel;
 import com.athanasius.droneservice.enums.DroneState;
