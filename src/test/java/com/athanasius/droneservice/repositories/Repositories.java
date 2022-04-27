@@ -42,4 +42,10 @@ class DronesRepositoryTests {
     Iterable<Drones> drones = dronesRepository.findAll();
     Assertions.assertThat(drones).extracting(Drones::getSerialNo).contains(drone.getSerialNo());
   }
+
+  @Test
+  public void getDroneByModelTest() {
+    List<Drones> drones = dronesRepository.findByModel(DroneModel.CRUISER_WEIGHT);
+    Assertions.assertThat(drones.size()>0);
+  }
 }

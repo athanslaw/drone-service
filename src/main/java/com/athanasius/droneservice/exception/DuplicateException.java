@@ -1,21 +1,8 @@
 package com.athanasius.droneservice.exception;
 
-public class DuplicateException extends RuntimeException {
-    private final String code;
-    private final String message;
-
+public class DuplicateException extends BaseException {
+    public static final String CODE= "09";
     public DuplicateException(String message) {
-        super(message);
-        this.message = message;
-        this.code = "09";
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
+        super(CODE, message);
     }
 }

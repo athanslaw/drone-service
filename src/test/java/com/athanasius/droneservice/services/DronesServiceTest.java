@@ -4,6 +4,7 @@ import com.athanasius.droneservice.dto.DronesDto;
 import com.athanasius.droneservice.enums.DroneModel;
 import com.athanasius.droneservice.enums.DroneState;
 import com.athanasius.droneservice.exception.BadRequestException;
+import com.athanasius.droneservice.exception.DuplicateException;
 import com.athanasius.droneservice.response.DronesResponse;
 import com.athanasius.droneservice.services.impl.DronesServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -27,7 +28,7 @@ public class DronesServiceTest {
     try {
       dronesService.registerDrone(
           new DronesDto("SNO1234567865", "CRUISER_WEIGHT", 200L, 0.95, "IDLE"));
-    }catch (BadRequestException e){}
+    }catch (BadRequestException | DuplicateException e){}
   }
 
   @Test

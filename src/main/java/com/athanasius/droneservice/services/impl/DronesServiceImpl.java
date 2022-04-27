@@ -1,8 +1,10 @@
 package com.athanasius.droneservice.services.impl;
 
 import com.athanasius.droneservice.dto.DronesDto;
+import com.athanasius.droneservice.enums.DroneModel;
 import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.exception.DuplicateException;
+import com.athanasius.droneservice.exception.NotFoundException;
 import com.athanasius.droneservice.model.Drones;
 import com.athanasius.droneservice.repository.DronesRepository;
 import com.athanasius.droneservice.response.DronesResponse;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 @Service
 public class DronesServiceImpl implements DronesService {
@@ -20,7 +21,7 @@ public class DronesServiceImpl implements DronesService {
   DronesRepository dronesRepository;
 
   @Override
-  public DronesResponse registerDrone(DronesDto dronesDto) throws BadRequestException {
+  public DronesResponse registerDrone(DronesDto dronesDto) throws BadRequestException, DuplicateException {
     Optional<Drones> drone = dronesRepository.findById(dronesDto.getSerialNo());
     if(drone.isEmpty()) {
       dronesRepository.save(dronesDto.toModel());
@@ -33,6 +34,13 @@ public class DronesServiceImpl implements DronesService {
   @Override
   public DronesResponse retrieveAllDrones() {
     List<Drones> drones = dronesRepository.findAll();
+    return new DronesResponse("00", "Drones retrieved successfully.", drones);
+  }
+
+  @Override
+  public DronesResponse getDronesByModel(String model) throws BadRequestException, NotFoundException {
+    List<Drones> drones = dronesRepository.findByModel(DroneModel.get(model));
+    if(drones.size() == 0) throw new NotFoundException("No record(s) found for the submitted model");
     return new DronesResponse("00", "Drones retrieved successfully.", drones);
   }
 }
