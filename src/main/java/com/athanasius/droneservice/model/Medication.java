@@ -24,4 +24,7 @@ public class Medication {
     @Column(name = "image", columnDefinition = "VARCHAR(240) NOT NULL")
     private String image;
 
+    // status is either true for active or false for inactive. This shows available medications that can be loaded
+    private boolean status = true;
+
 }
