@@ -1,19 +1,14 @@
 package com.athanasius.droneservice.services;
 
-import com.athanasius.droneservice.DroneServiceApplication;
 import com.athanasius.droneservice.dto.DronesDto;
 import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.exception.DuplicateException;
 import com.athanasius.droneservice.exception.NotFoundException;
 import com.athanasius.droneservice.response.DronesResponse;
-import com.athanasius.droneservice.services.impl.DronesServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -25,54 +20,59 @@ public class DronesServiceTest {
   DronesService dronesService;
 
   @Test
-  public void registerDrone(){
+  void registerDrone(){
     try {
-      dronesService.registerDrone(
+      DronesResponse dronesResponse = dronesService.registerDrone(
           new DronesDto("SNO1234567865", "CRUISER_WEIGHT", 200L, 0.95, "IDLE"));
-    }catch (BadRequestException | DuplicateException e){}
+      Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
+    }catch (BadRequestException | DuplicateException e){
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("09");
+    }
   }
 
   @Test
-  public void retrieveDrones(){
+  void retrieveDrones(){
     DronesResponse dronesResponse = dronesService.retrieveAllDrones();
-    Assertions.assertThat(dronesResponse.getDrones().size() > 0);
+    Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
   }
 
   @Test
-  public void validDronesModelTest(){
+  void validDronesModelTest(){
     try {
       DronesResponse dronesResponse = dronesService.getDronesByModel("LIGHT_WEIGHT");
-      Assertions.assertThat(dronesResponse.getDrones().size() > 0);
+      Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
     }catch (BadRequestException | NotFoundException e){
       Assertions.assertThat(e.getStatusCode().equals("04"));
     }
   }
 
   @Test
-  public void invalidDronesModelTest(){
+  void invalidDronesModelTest(){
     try {
-      dronesService.getDronesByModel("NO_WEIGHT");
+      DronesResponse dronesResponse = dronesService.getDronesByModel("NO_WEIGHT");
+      Assertions.assertThat(dronesResponse.getStatusCode().equals("00")).isFalse();
     }catch (BadRequestException | NotFoundException e){
       Assertions.assertThat((e.getStatusCode().equals("05")));
     }
   }
 
   @Test
-  public void validStateTest(){
+  void validStateTest(){
     try {
       DronesResponse dronesResponse = dronesService.getDronesByState("IDLE");
-      Assertions.assertThat(dronesResponse.getDrones().size() > 0);
+      Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
     }catch (BadRequestException | NotFoundException e){
-      Assertions.assertThat((e.getStatusCode().equals("04")));
+      Assertions.assertThat((e.getStatusCode())).isEqualTo("04");
     }
   }
 
   @Test
-  public void invalidStateTest(){
+  void invalidStateTest(){
     try {
-      dronesService.getDronesByState("INVALID");
+      DronesResponse dronesResponse = dronesService.getDronesByState("INVALID");
+      Assertions.assertThat(dronesResponse.getStatusCode().equals("00")).isFalse();
     }catch (BadRequestException | NotFoundException e){
-      Assertions.assertThat((e.getStatusCode().equals("05")));
+      Assertions.assertThat((e.getStatusCode())).isEqualTo("05");
     }
   }
 

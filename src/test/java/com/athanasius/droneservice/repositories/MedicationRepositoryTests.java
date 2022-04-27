@@ -22,8 +22,8 @@ class MedicationRepositoryTests {
 
   @Test
   public void addNewMedicationTest() {
-    Medication drone = new Medication("WEIGHT_1", "Panadol", "image");
-    medicationRepository.save(drone);
+    Medication medication = new Medication("MED1", 200, "Panadol", "athans", true);
+    medicationRepository.save(medication);
     List<Medication> d = medicationRepository.findAll();
     Assertions.assertThat(d.size() > 0);
   }

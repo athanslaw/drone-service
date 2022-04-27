@@ -29,7 +29,7 @@ public class DronesServiceImpl implements DronesService {
     }else{
       throw new DuplicateException("Record already exists with the submitted serial number.");
     }
-    return new DronesResponse("00", "Record save successfully.");
+    return new DronesResponse("00", "Record saved successfully.");
   }
 
   @Override

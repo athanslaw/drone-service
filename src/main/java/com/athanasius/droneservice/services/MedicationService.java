@@ -8,10 +8,10 @@ import com.athanasius.droneservice.response.MedicationResponse;
 
 public interface MedicationService {
   MedicationResponse saveMedication(MedicationDto medicationDto) throws BadRequestException, DuplicateException;
-  MedicationResponse retrieveAllMedications();
-  MedicationResponse retrieveAllMedicationsByStatus(Boolean status);
-  MedicationResponse getMedicationsByCode(String code) throws BadRequestException, NotFoundException;
-  MedicationResponse getMedicationByName(String state) throws BadRequestException, NotFoundException;
-  MedicationResponse disableMedicationByCode(String code) throws BadRequestException, NotFoundException;
-  MedicationResponse enableMedicationByCode(String code) throws BadRequestException, NotFoundException;
+  MedicationResponse retrieveAllMedications() throws NotFoundException;
+  MedicationResponse retrieveAllMedicationsByStatus(Boolean status) throws NotFoundException;
+  MedicationResponse getMedicationsByCode(String code) throws NotFoundException;
+  MedicationResponse getMedicationByName(String state) throws NotFoundException;
+  MedicationResponse disableMedicationByCode(String code) throws NotFoundException;
+  MedicationResponse enableMedicationByCode(String code) throws NotFoundException;
 }

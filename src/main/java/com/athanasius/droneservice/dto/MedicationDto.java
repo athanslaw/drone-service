@@ -10,14 +10,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MedicationDto {
 
-  private String weightCode;
+  private String code;
+  private Integer weight;
 
   private String name;
 
   private String image;
 
-  public Medication toMedication() {
-    return new Medication(this.getWeightCode(), this.getName(), this.getImage());
+  private Boolean status;
+
+  public MedicationDto(String code, Integer weight, String name, String image) {
+    this.code = code;
+    this.weight = weight;
+    this.name = name;
+    this.image = image;
+    this.status = true;
+  }
+
+  public Medication toModel() {
+    return new Medication(this.getCode(), this.getWeight(), this.getName(), this.getImage(), this.getStatus());
   }
 
 }

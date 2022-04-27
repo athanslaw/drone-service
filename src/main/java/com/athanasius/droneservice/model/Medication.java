@@ -14,8 +14,11 @@ import lombok.NoArgsConstructor;
 public class Medication {
 
     @javax.persistence.Id
-    @Column(name = "weight_code", columnDefinition = "VARCHAR(20) NOT NULL")
-    private String weightCode;
+    @Column(name = "code", columnDefinition = "VARCHAR(20) NOT NULL")
+    private String code;
+
+    @Column(name = "weight", columnDefinition = "INT(20) NOT NULL")
+    private Integer weight;
 
     @Column(name = "name", columnDefinition = "VARCHAR(20) NOT NULL")
     private String name;
@@ -25,6 +28,6 @@ public class Medication {
     private String image;
 
     // status is either true for active or false for inactive. This shows available medications that can be loaded
-    private boolean status = true;
+    private Boolean status;
 
 }
