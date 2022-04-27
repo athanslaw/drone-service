@@ -2,6 +2,7 @@ package com.athanasius.droneservice.services.impl;
 
 import com.athanasius.droneservice.dto.DronesDto;
 import com.athanasius.droneservice.enums.DroneModel;
+import com.athanasius.droneservice.enums.DroneState;
 import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.exception.DuplicateException;
 import com.athanasius.droneservice.exception.NotFoundException;
@@ -40,7 +41,14 @@ public class DronesServiceImpl implements DronesService {
   @Override
   public DronesResponse getDronesByModel(String model) throws BadRequestException, NotFoundException {
     List<Drones> drones = dronesRepository.findByModel(DroneModel.get(model));
-    if(drones.size() == 0) throw new NotFoundException("No record(s) found for the submitted model");
+    if(drones.size() == 0) throw new NotFoundException("No record(s) found for the given model");
+    return new DronesResponse("00", "Drones retrieved successfully.", drones);
+  }
+
+  @Override
+  public DronesResponse getDronesByState(String state) throws BadRequestException, NotFoundException {
+    List<Drones> drones = dronesRepository.findByState(DroneState.get(state));
+    if(drones.size() == 0) throw new NotFoundException("No record(s) found for the given state");
     return new DronesResponse("00", "Drones retrieved successfully.", drones);
   }
 }

@@ -10,4 +10,5 @@ public interface DronesService {
   DronesResponse registerDrone(DronesDto dronesDto) throws BadRequestException, DuplicateException;
   DronesResponse retrieveAllDrones();
   DronesResponse getDronesByModel(String model) throws BadRequestException, NotFoundException;
+  DronesResponse getDronesByState(String state) throws BadRequestException, NotFoundException;
 }

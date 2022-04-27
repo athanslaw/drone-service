@@ -53,4 +53,17 @@ public class DronesController {
     }
   }
 
+  @GetMapping(path= "/state/{state}", produces = "application/json")
+  public ResponseEntity<DronesResponse> getDronesByState(@PathVariable("state") String state) {
+    try{
+      return ResponseEntity.ok(dronesService.getDronesByState(state));
+    }
+    catch (BadRequestException e){
+      return new ResponseEntity<>(new DronesResponse(e.getStatusCode(),e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+    catch (NotFoundException e){
+      return new ResponseEntity<>(new DronesResponse(e.getStatusCode(),e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+  }
+
 }

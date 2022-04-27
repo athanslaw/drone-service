@@ -48,4 +48,10 @@ class DronesRepositoryTests {
     List<Drones> drones = dronesRepository.findByModel(DroneModel.CRUISER_WEIGHT);
     Assertions.assertThat(drones.size()>0);
   }
+
+  @Test
+  public void getDroneByStateTest() {
+    List<Drones> drones = dronesRepository.findByState(DroneState.IDLE);
+    Assertions.assertThat(drones.size()>0);
+  }
 }
