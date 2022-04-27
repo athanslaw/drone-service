@@ -3,6 +3,8 @@ package com.athanasius.droneservice.model;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +19,13 @@ public class Dispatch {
     @Column(name = "tracking_id", columnDefinition = "VARCHAR(110) NOT NULL")
     private String tranckingId;
 
-    @Column(name = "drone_serial_no", columnDefinition = "VARCHAR(110) NOT NULL")
-    private Long droneSerialNo;
+    @ManyToOne
+    @JoinColumn(name = "serial_no",nullable = false)
+    private Drones drone;
 
-    @Column(name = "medication_code", columnDefinition = "VARCHAR(20) NOT NULL")
-    private Long medicationCode;
+    @ManyToOne
+    @JoinColumn(name = "code",nullable = false)
+    private Medication medication;
 
     @Column(name = "source", columnDefinition = "VARCHAR(30) NOT NULL")
     private Long source;
