@@ -18,10 +18,10 @@ public class Medication {
     private String weightCode;
 
     @Column(name = "name", columnDefinition = "VARCHAR(20) NOT NULL")
-    private DroneModel name;
+    private String name;
 
-    // base64 image
+    // base64 image or image path
     @Column(name = "image", columnDefinition = "VARCHAR(240) NOT NULL")
-    private Long image;
+    private String image;
 
 }
