@@ -44,22 +44,49 @@ public class Validator {
 
     public void validateMedication(MedicationDto medicationDto) throws BadRequestException {
 
+        if (isNullOrEmptyString(medicationDto.getCode())) {
+            throw new BadRequestException("Code is required");
+        }
+
+        // no special xters
+        for(int i =0; i < medicationDto.getCode().length(); i++){
+            int c = medicationDto.getCode().charAt(i);
+            if(!isUppercaseLetter(c) && medicationDto.getCode().charAt(i) != '_' && !isDigit(c)){
+                throw new BadRequestException("Code should be only Uppercase, underscore and numbers");
+            }
+        }
+
         if (isNullOrEmptyString(medicationDto.getName())) {
             throw new BadRequestException("Name is required");
         }
 
-        // no special xters
-        if (medicationDto.getName().length() > 100) {
-            throw new BadRequestException("Serial Number should not exceed 100 characters");
+        // name should be only letters, numbers, - and _
+        for(int i =0; i < medicationDto.getName().length(); i++){
+            int c = medicationDto.getName().charAt(i);
+            if(!isLowerCase(c) && !isUppercaseLetter(c) && c != (int)'_' && c != (int)'-'){
+                throw new BadRequestException("Name should be only letters, numbers, - and _");
+            }
         }
-
-        //code should be only Uppercase, underscore and numbers
-
     }
 
     public static boolean isNullOrEmptyString(String stringValue) {
         return (null == stringValue || stringValue.trim().equals(""));
     }
 
+    private boolean isLowerCase(int c) {
+        return (c >= 97 && c <= 122);
+    }
+
+    private boolean isUppercaseLetter(int c) {
+        return (c >= 65 && c <= 90);
+    }
+
+    private boolean isDigit(int c) {
+        return (c >= 48 && c <= 57);
+    }
+
+    private boolean isSymbol(int c) {
+        return (c >= (int)'!' && c <= (int)'/'); // 21 to 47, modify based on acceptable symbols
+    }
 }
 
