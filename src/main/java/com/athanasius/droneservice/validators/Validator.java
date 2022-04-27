@@ -67,6 +67,10 @@ public class Validator {
                 throw new BadRequestException("Name should be only letters, numbers, - and _");
             }
         }
+
+        if (medicationDto.getWeight() == null) {
+            throw new BadRequestException("Weight is required");
+        }
     }
 
     public static boolean isNullOrEmptyString(String stringValue) {

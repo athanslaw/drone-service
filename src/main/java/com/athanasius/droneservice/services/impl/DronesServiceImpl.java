@@ -10,6 +10,7 @@ import com.athanasius.droneservice.model.Drones;
 import com.athanasius.droneservice.repository.DronesRepository;
 import com.athanasius.droneservice.response.DronesResponse;
 import com.athanasius.droneservice.services.DronesService;
+import com.athanasius.droneservice.validators.Validator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,12 @@ public class DronesServiceImpl implements DronesService {
   @Autowired
   DronesRepository dronesRepository;
 
+  @Autowired
+  Validator validator;
+
   @Override
   public DronesResponse registerDrone(DronesDto dronesDto) throws BadRequestException, DuplicateException {
+    validator.validateDrones(dronesDto);
     Optional<Drones> drone = dronesRepository.findById(dronesDto.getSerialNo());
     if(drone.isEmpty()) {
       dronesRepository.save(dronesDto.toModel());

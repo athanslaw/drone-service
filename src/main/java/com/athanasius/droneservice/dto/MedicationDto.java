@@ -24,11 +24,10 @@ public class MedicationDto {
     this.weight = weight;
     this.name = name;
     this.image = image;
-    this.status = true;
   }
 
   public Medication toModel() {
-    return new Medication(this.getCode(), this.getWeight(), this.getName(), this.getImage(), this.getStatus());
+    return new Medication(this.getCode(), this.getWeight(), this.getName(), this.getImage(), true);
   }
 
 }

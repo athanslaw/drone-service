@@ -24,13 +24,9 @@ public class DronesController {
   @Autowired
   DronesService dronesService;
 
-  @Autowired
-  Validator validator;
-
   @PostMapping(produces = "application/json")
   public ResponseEntity<DronesResponse> postAvailableDroneForLoading(@RequestBody DronesDto dronesDto) {
     try{
-      validator.validateDrones(dronesDto);
       DronesResponse dronesResponse = dronesService.registerDrone(dronesDto);
       return new ResponseEntity<>(dronesResponse, HttpStatus.CREATED);
     }catch (DuplicateException e){

@@ -23,8 +23,8 @@ public class Medication {
     @Column(name = "name", columnDefinition = "VARCHAR(20) NOT NULL")
     private String name;
 
-    // base64 image or image path
-    @Column(name = "image", columnDefinition = "VARCHAR(240) NOT NULL")
+    // image path
+    @Column(name = "image", columnDefinition = "VARCHAR(240)")
     private String image;
 
     // status is either true for active or false for inactive. This shows available medications that can be loaded

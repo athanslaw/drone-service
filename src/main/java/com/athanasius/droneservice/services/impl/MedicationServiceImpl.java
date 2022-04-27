@@ -12,8 +12,9 @@ import com.athanasius.droneservice.validators.Validator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MedicationServiceImpl implements MedicationService {
 
   @Autowired
@@ -70,9 +71,12 @@ public class MedicationServiceImpl implements MedicationService {
       throws NotFoundException {
     Optional<Medication> medication = medicationRepository.findById(code);
     if(medication.isEmpty()) throw new NotFoundException("No record found for "+code);
+    if(!medication.get().getStatus()){
+      return new MedicationResponse("00", "Medication is already disabled.", medication.get());
+    }
     medication.get().setStatus(false);
     medicationRepository.save(medication.get());
-    return new MedicationResponse("00", "Medication updated successfully.", medication.get());
+    return new MedicationResponse("00", "Medication disabled successfully.", medication.get());
   }
 
   @Override
@@ -80,8 +84,11 @@ public class MedicationServiceImpl implements MedicationService {
       throws NotFoundException {
     Optional<Medication> medication = medicationRepository.findById(code);
     if(medication.isEmpty()) throw new NotFoundException("No record found for "+code);
+    if(medication.get().getStatus()){
+      return new MedicationResponse("00", "Medication is already enabled.", medication.get());
+    }
     medication.get().setStatus(true);
     medicationRepository.save(medication.get());
-    return new MedicationResponse("00", "Medication updated successfully.", medication.get());
+    return new MedicationResponse("00", "Medication enabled successfully.", medication.get());
   }
 }
