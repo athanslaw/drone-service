@@ -47,6 +47,16 @@ class DispatchServiceTest {
     }
   }
 
+  @Test
+  void viewDroneContentTest(){
+    try {
+      DispatchResponse dispatchResponse = dispatchService.getDroneContent("tracker1224");
+      Assertions.assertThat(dispatchResponse.getStatusCode()).isEqualTo("00");
+    }catch (NotFoundException e){
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("04");
+    }
+  }
+
   /*
   @Test
   void updateDroneStatus(){
