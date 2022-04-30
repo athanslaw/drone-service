@@ -17,7 +17,7 @@ public class Dispatch {
 
     @javax.persistence.Id
     @Column(name = "tracking_id", columnDefinition = "VARCHAR(30) NOT NULL")
-    private String tranckingId;
+    private String trackingId;
 
     @ManyToOne
     @JoinColumn(name = "serial_no",nullable = false)
