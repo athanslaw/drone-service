@@ -26,10 +26,21 @@ class DispatchServiceTest {
   DispatchService dispatchService;
 
   @Test
-  void setupDispatch(){
+  void setupDispatchTest(){
     try {
       DispatchResponse dispatchResponse = dispatchService.setUpDispatch(
           new DispatchDto("SMO1234567862", "SQO122", "Ikeja, Lagos", "Canada"));
+
+      Assertions.assertThat(dispatchResponse.getStatusCode()).isEqualTo("00");
+    }catch (BadRequestException e){
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("05");
+    }
+  }
+
+  @Test
+  void triggerDispatchTest(){
+    try {
+      DispatchResponse dispatchResponse = dispatchService.triggerDispatch("tracker1224");
 
       Assertions.assertThat(dispatchResponse.getStatusCode()).isEqualTo("00");
     }catch (BadRequestException e){
