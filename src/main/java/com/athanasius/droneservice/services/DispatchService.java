@@ -11,6 +11,7 @@ import com.athanasius.droneservice.response.MedicationResponse;
 
 public interface DispatchService {
   DispatchResponse setUpDispatch(DispatchDto dispatchDto) throws BadRequestException;
+  DispatchResponse triggerDispatch(String droneSerialNumber) throws NotFoundException;
   DispatchResponse trackADispatch(String trackingId) throws NotFoundException;
   DispatchResponse updateDispatchStatus(DroneState status) throws NotFoundException;
   DispatchResponse getDispatchByStatus(DroneState status) throws NotFoundException;

@@ -76,7 +76,15 @@ public class DispatchServiceImpl implements DispatchService {
     catch (NotFoundException e){
       throw new BadRequestException(e.getMessage());
     }
-    return new DispatchResponse("00", "Dispatch initiated successfully. Tracker ID is "+dispatchDto.getTrackingId(), dispatch);
+    return new DispatchResponse("00", "Dispatch setup successfully. Tracker ID is "+dispatchDto.getTrackingId(), dispatch);
+  }
+
+  @Override
+  public DispatchResponse triggerDispatch(String droneSerialNumber) throws NotFoundException {
+    List<Dispatch> dispatch = dispatchRepository.findByDrone(dronesService.getDronesBySerialNo(droneSerialNumber).getDrone());
+    if(dispatch.size() == 0) throw new NotFoundException("Drone is not yet loaded");
+    dronesService.updateDroneState(droneSerialNumber, DroneState.DELIVERING);
+    return new DispatchResponse("00", "Dispatch triggered successfully.", dispatch);
   }
 
   @Override

@@ -33,9 +33,6 @@ public class Dispatch {
     @Column(name = "destination", columnDefinition = "VARCHAR(30) NOT NULL")
     private String destination;
 
-    @Column(name = "status", columnDefinition = "VARCHAR(20) NOT NULL")
-    private String status;
-
     private LocalDateTime timestamp;
 
 }

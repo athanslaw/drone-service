@@ -41,10 +41,9 @@ class DispatchServiceTest {
   void triggerDispatchTest(){
     try {
       DispatchResponse dispatchResponse = dispatchService.triggerDispatch("tracker1224");
-
       Assertions.assertThat(dispatchResponse.getStatusCode()).isEqualTo("00");
-    }catch (BadRequestException e){
-      Assertions.assertThat(e.getStatusCode()).isEqualTo("05");
+    }catch (NotFoundException e){
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("04");
     }
   }
 
