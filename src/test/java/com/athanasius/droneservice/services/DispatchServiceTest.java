@@ -26,9 +26,9 @@ class DispatchServiceTest {
   DispatchService dispatchService;
 
   @Test
-  void registerDrone(){
+  void setupDispatch(){
     try {
-      DispatchResponse dispatchResponse = dispatchService.saveDispatch(
+      DispatchResponse dispatchResponse = dispatchService.setUpDispatch(
           new DispatchDto("SMO1234567862", "SQO122", "Ikeja, Lagos", "Canada"));
 
       Assertions.assertThat(dispatchResponse.getStatusCode()).isEqualTo("00");

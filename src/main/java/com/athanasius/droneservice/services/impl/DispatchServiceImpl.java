@@ -46,7 +46,7 @@ public class DispatchServiceImpl implements DispatchService {
   }
 
   @Override
-  public DispatchResponse saveDispatch(DispatchDto dispatchDto)
+  public DispatchResponse setUpDispatch(DispatchDto dispatchDto)
       throws BadRequestException {
     Dispatch dispatch;
     try {
@@ -81,7 +81,9 @@ public class DispatchServiceImpl implements DispatchService {
 
   @Override
   public DispatchResponse trackADispatch(String trackingId) throws NotFoundException {
-    return null;
+    Optional<Dispatch> dispatch = dispatchRepository.findById(trackingId);
+    if(dispatch.isEmpty()) throw new NotFoundException("No dispatch item with the given tracker id");
+    return new DispatchResponse("00", "Dispatch initiated successfully.", dispatch.get());
   }
 
   @Override
