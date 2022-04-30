@@ -41,7 +41,17 @@ public class DispatchController {
   public ResponseEntity<DispatchResponse> setUpDispatch(@PathVariable String droneSerialNo) {
     try{
       DispatchResponse dispatchResponse = dispatchService.triggerDispatch(droneSerialNo);
-      return new ResponseEntity<>(dispatchResponse, HttpStatus.CREATED);
+      return new ResponseEntity<>(dispatchResponse, HttpStatus.OK);
+    }catch (NotFoundException ne){
+      return new ResponseEntity<>(new DispatchResponse(ne.getStatusCode(),ne.getMessage()), HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping(path= "/drone/{droneSerialNo}", produces = "application/json")
+  public ResponseEntity<DispatchResponse> viewDroneContent(@PathVariable String droneSerialNo) {
+    try{
+      DispatchResponse dispatchResponse = dispatchService.getDroneContent(droneSerialNo);
+      return new ResponseEntity<>(dispatchResponse, HttpStatus.OK);
     }catch (NotFoundException ne){
       return new ResponseEntity<>(new DispatchResponse(ne.getStatusCode(),ne.getMessage()), HttpStatus.NOT_FOUND);
     }
