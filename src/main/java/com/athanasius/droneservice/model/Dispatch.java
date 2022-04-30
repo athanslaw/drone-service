@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Dispatch {
 
     @javax.persistence.Id
-    @Column(name = "tracking_id", columnDefinition = "VARCHAR(110) NOT NULL")
+    @Column(name = "tracking_id", columnDefinition = "VARCHAR(30) NOT NULL")
     private String tranckingId;
 
     @ManyToOne
@@ -28,10 +28,10 @@ public class Dispatch {
     private Medication medication;
 
     @Column(name = "source", columnDefinition = "VARCHAR(30) NOT NULL")
-    private Long source;
+    private String source;
 
     @Column(name = "destination", columnDefinition = "VARCHAR(30) NOT NULL")
-    private Long destination;
+    private String destination;
 
     private LocalDateTime timestamp;
 

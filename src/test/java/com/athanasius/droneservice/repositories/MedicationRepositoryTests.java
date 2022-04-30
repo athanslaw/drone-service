@@ -3,6 +3,7 @@ package com.athanasius.droneservice.repositories;
 import com.athanasius.droneservice.model.Medication;
 import com.athanasius.droneservice.repository.MedicationRepository;
 import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,8 +25,8 @@ class MedicationRepositoryTests {
   public void addNewMedicationTest() {
     Medication medication = new Medication("MED1", 200, "Panadol", "athans", true);
     medicationRepository.save(medication);
-    List<Medication> d = medicationRepository.findAll();
-    Assertions.assertThat(d.size() > 0);
+    Optional<Medication> d = medicationRepository.findById("MED1");
+    Assertions.assertThat(d.isEmpty()).isFalse();
   }
 
   @Test
