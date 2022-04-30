@@ -30,7 +30,7 @@ public class DispatchServiceImpl implements DispatchService {
   @Autowired
   DispatchRepository dispatchRepository;
 
-  private String generateTrackerId(){
+  private String generateId(){
     return new Date().getTime()+generateFourDigitRandomID();
   }
 
@@ -40,8 +40,9 @@ public class DispatchServiceImpl implements DispatchService {
   }
 
   @Override
-  public DispatchResponse setUpDispatch(DispatchDto dispatchDto)
-      throws BadRequestException {
+  public DispatchResponse setUpDispatch(DispatchDto dispatchDto) throws BadRequestException {
+    if(dispatchDto.getMedicationCode()==null || dispatchDto.getDroneSerialNo()==null)
+      throw new BadRequestException("medicationCode and droneSerialNo should not be null");
     Dispatch dispatch;
     try {
       Drones drones = dronesService.getDronesBySerialNo(dispatchDto.getDroneSerialNo()).getDrone();
@@ -56,7 +57,7 @@ public class DispatchServiceImpl implements DispatchService {
       }
       LocalDateTime date = LocalDateTime.now();
       dispatchDto.setTimestamp(date);
-      dispatchDto.setTrackingId(generateTrackerId());
+      dispatchDto.setId(generateId());
       dispatchDto.setDrone(drones);
       dispatchDto.setMedication(medication);
       dispatch = dispatchDto.toModel();
@@ -70,7 +71,7 @@ public class DispatchServiceImpl implements DispatchService {
     catch (NotFoundException e){
       throw new BadRequestException(e.getMessage());
     }
-    return new DispatchResponse("00", "Dispatch setup successfully. Tracker ID is "+dispatchDto.getTrackingId(), dispatch);
+    return new DispatchResponse("00", "Dispatch setup successfully. Tracker ID is "+dispatchDto.getId(), dispatch);
   }
 
   @Override

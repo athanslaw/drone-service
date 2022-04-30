@@ -1,9 +1,12 @@
 package com.athanasius.droneservice.controller;
 
-import com.athanasius.droneservice.dto.DronesDto;
-import com.athanasius.droneservice.response.DronesResponse;
-import com.athanasius.droneservice.services.impl.DronesServiceImpl;
+import com.athanasius.droneservice.dto.DispatchDto;
+import com.athanasius.droneservice.exception.BadRequestException;
+import com.athanasius.droneservice.response.DispatchResponse;
+import com.athanasius.droneservice.services.DispatchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dispatch/api/v1")
 public class DispatchController {
 
+  @Autowired
+  DispatchService dispatchService;
+
   @GetMapping(path= "/health", produces = "application/json")
   public String health() {
     return "Health check";
+  }
+
+  @PostMapping(path= "/setup", produces = "application/json")
+  public ResponseEntity<DispatchResponse> setUpDispatch(@RequestBody DispatchDto dispatchDto) {
+    try{
+      DispatchResponse dispatchResponse = dispatchService.setUpDispatch(dispatchDto);
+      return new ResponseEntity<>(dispatchResponse, HttpStatus.CREATED);
+    }catch (BadRequestException e){
+      return new ResponseEntity<>(new DispatchResponse(e.getStatusCode(),e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
   }
 
 }

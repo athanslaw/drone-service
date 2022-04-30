@@ -35,7 +35,7 @@ class DispatchRepositoryTests {
     drone.setSerialNo("SNO1234567862");
     Medication medication = new Medication();
     medication.setCode("SQO122");
-    Dispatch dispatch = new Dispatch("tracker1", drone, medication, "Lagos Nigeria","Canada", LocalDateTime.now());
+    Dispatch dispatch = new Dispatch("tracker1", drone, medication, LocalDateTime.now());
 
     dispatchRepository.save(dispatch);
     Optional<Dispatch> d = dispatchRepository.findById("tracker1");

@@ -13,15 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DispatchDto {
 
-  private String trackingId;
+  private String id;
 
   private String droneSerialNo;
 
   private String medicationCode;
-
-  private String source;
-
-  private String destination;
 
   private LocalDateTime timestamp;
 
@@ -29,14 +25,11 @@ public class DispatchDto {
 
   private Medication medication;
   public Dispatch toModel() {
-    return new Dispatch(this.getTrackingId(), this.getDrone(), this.getMedication(), this.getSource(), this.getDestination(), this.getTimestamp());
+    return new Dispatch(this.getId(), this.getDrone(), this.getMedication(), this.getTimestamp());
   }
 
-  public DispatchDto(String droneSerialNo, String medicationCode, String source,
-      String destination) {
+  public DispatchDto(String droneSerialNo, String medicationCode) {
     this.droneSerialNo = droneSerialNo;
     this.medicationCode = medicationCode;
-    this.source = source;
-    this.destination = destination;
   }
 }

@@ -6,7 +6,6 @@ import com.athanasius.droneservice.exception.DuplicateException;
 import com.athanasius.droneservice.exception.NotFoundException;
 import com.athanasius.droneservice.response.DronesResponse;
 import com.athanasius.droneservice.services.DronesService;
-import com.athanasius.droneservice.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
