@@ -1,27 +1,21 @@
 package com.athanasius.droneservice.services.impl;
 
 import com.athanasius.droneservice.dto.DispatchDto;
-import com.athanasius.droneservice.dto.MedicationDto;
 import com.athanasius.droneservice.enums.DroneState;
 import com.athanasius.droneservice.exception.BadRequestException;
-import com.athanasius.droneservice.exception.DuplicateException;
 import com.athanasius.droneservice.exception.NotFoundException;
 import com.athanasius.droneservice.model.Dispatch;
 import com.athanasius.droneservice.model.Drones;
 import com.athanasius.droneservice.model.Medication;
 import com.athanasius.droneservice.repository.DispatchRepository;
 import com.athanasius.droneservice.response.DispatchResponse;
-import com.athanasius.droneservice.response.MedicationResponse;
 import com.athanasius.droneservice.services.DispatchService;
 import com.athanasius.droneservice.services.DronesService;
 import com.athanasius.droneservice.services.MedicationService;
 import java.security.SecureRandom;
-import java.security.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +76,7 @@ public class DispatchServiceImpl implements DispatchService {
   @Override
   public DispatchResponse triggerDispatch(String droneSerialNumber) throws NotFoundException {
     List<Dispatch> dispatch = dispatchRepository.findByDrone(dronesService.getDronesBySerialNo(droneSerialNumber).getDrone());
-    if(dispatch.size() == 0) throw new NotFoundException("Drone is not yet loaded");
+    if(dispatch.isEmpty()) throw new NotFoundException("Drone is not yet loaded");
     dronesService.updateDroneState(droneSerialNumber, DroneState.DELIVERING);
     return new DispatchResponse("00", "Dispatch triggered successfully.", dispatch);
   }
@@ -90,25 +84,15 @@ public class DispatchServiceImpl implements DispatchService {
   @Override
   public DispatchResponse getDroneContent(String droneSerialNumber) throws NotFoundException {
     List<Dispatch> dispatch = dispatchRepository.findByDrone(dronesService.getDronesBySerialNo(droneSerialNumber).getDrone());
-    if(dispatch.size() == 0) throw new NotFoundException("Drone is not yet loaded");
-    dronesService.updateDroneState(droneSerialNumber, DroneState.DELIVERING);
-    return new DispatchResponse("00", "Dispatch triggered successfully.", dispatch);
+    if(dispatch.isEmpty()) throw new NotFoundException("Drone is not yet loaded");
+    return new DispatchResponse("00", "Records fetched", dispatch);
   }
 
   @Override
-  public DispatchResponse trackADispatch(String trackingId) throws NotFoundException {
-    Optional<Dispatch> dispatch = dispatchRepository.findById(trackingId);
-    if(dispatch.isEmpty()) throw new NotFoundException("No dispatch item with the given tracker id");
-    return new DispatchResponse("00", "Dispatch initiated successfully.", dispatch.get());
+  public DispatchResponse getDronesByMedication(String medicationCode) throws NotFoundException {
+    List<Dispatch> dispatch = dispatchRepository.findByMedication(medicationService.getMedicationsByCode(medicationCode).getMedication());
+    if(dispatch.isEmpty()) throw new NotFoundException("Medication is not yet added to any drone");
+    return new DispatchResponse("00", "Records fetched", dispatch);
   }
 
-  @Override
-  public DispatchResponse updateDispatchStatus(DroneState status) throws NotFoundException {
-    return null;
-  }
-
-  @Override
-  public DispatchResponse getDispatchByStatus(DroneState status) throws NotFoundException {
-    return null;
-  }
 }
