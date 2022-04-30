@@ -62,4 +62,14 @@ public class DronesController {
     }
   }
 
+  @GetMapping(path= "/idle", produces = "application/json")
+  public ResponseEntity<DronesResponse> getDronesByState() {
+    try{
+      return ResponseEntity.ok(dronesService.getIdleDrones());
+    }
+    catch (NotFoundException e){
+      return new ResponseEntity<>(new DronesResponse(e.getStatusCode(),e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+  }
+
 }

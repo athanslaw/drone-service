@@ -1,6 +1,7 @@
 package com.athanasius.droneservice.services;
 
 import com.athanasius.droneservice.dto.DronesDto;
+import com.athanasius.droneservice.enums.DroneState;
 import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.exception.DuplicateException;
 import com.athanasius.droneservice.exception.NotFoundException;
@@ -14,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DronesServiceTest {
+class DronesServiceTest {
 
   @Autowired
   DronesService dronesService;
@@ -31,6 +32,15 @@ public class DronesServiceTest {
   }
 
   @Test
+  void updateDroneStatus(){
+    try {
+      dronesService.updateDroneState("SNO1234567865", DroneState.IDLE);
+    }catch (NotFoundException e){
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("09");
+    }
+  }
+
+  @Test
   void retrieveDrones(){
     DronesResponse dronesResponse = dronesService.retrieveAllDrones();
     Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
@@ -42,7 +52,7 @@ public class DronesServiceTest {
       DronesResponse dronesResponse = dronesService.getDronesByModel("LIGHT_WEIGHT");
       Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
     }catch (BadRequestException | NotFoundException e){
-      Assertions.assertThat(e.getStatusCode().equals("04"));
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("04");
     }
   }
 
@@ -50,9 +60,9 @@ public class DronesServiceTest {
   void invalidDronesModelTest(){
     try {
       DronesResponse dronesResponse = dronesService.getDronesByModel("NO_WEIGHT");
-      Assertions.assertThat(dronesResponse.getStatusCode().equals("00")).isFalse();
+      Assertions.assertThat(dronesResponse.getStatusCode()).isNotEqualTo("00");
     }catch (BadRequestException | NotFoundException e){
-      Assertions.assertThat((e.getStatusCode().equals("05")));
+      Assertions.assertThat(e.getStatusCode()).isEqualTo("05");
     }
   }
 
@@ -70,7 +80,7 @@ public class DronesServiceTest {
   void invalidStateTest(){
     try {
       DronesResponse dronesResponse = dronesService.getDronesByState("INVALID");
-      Assertions.assertThat(dronesResponse.getStatusCode().equals("00")).isFalse();
+      Assertions.assertThat(dronesResponse.getStatusCode()).isNotEqualTo("00");
     }catch (BadRequestException | NotFoundException e){
       Assertions.assertThat((e.getStatusCode())).isEqualTo("05");
     }

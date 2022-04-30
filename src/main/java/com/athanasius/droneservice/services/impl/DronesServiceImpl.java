@@ -51,9 +51,32 @@ public class DronesServiceImpl implements DronesService {
   }
 
   @Override
+  public DronesResponse getIdleDrones() throws NotFoundException {
+    List<Drones> drones = dronesRepository.findByState(DroneState.IDLE);
+    if(drones.size() == 0) throw new NotFoundException("No record(s) found for the given state");
+    return new DronesResponse("00", "Drones retrieved successfully.", drones);
+  }
+
+  @Override
   public DronesResponse getDronesByState(String state) throws BadRequestException, NotFoundException {
     List<Drones> drones = dronesRepository.findByState(DroneState.get(state));
     if(drones.size() == 0) throw new NotFoundException("No record(s) found for the given state");
     return new DronesResponse("00", "Drones retrieved successfully.", drones);
+  }
+
+  @Override
+  public DronesResponse getDronesBySerialNo(String serialNo) throws NotFoundException {
+    Optional<Drones> drones = dronesRepository.findById(serialNo);
+    if(drones.isEmpty()) throw new NotFoundException("No drone found with the given serial number");
+    return new DronesResponse("00", "Drones retrieved successfully.", drones.get());
+  }
+
+  @Override
+  public void updateDroneState(String serialNo, DroneState droneState) throws NotFoundException{
+    Optional<Drones> drones = dronesRepository.findById(serialNo);
+    if(drones.isEmpty()) throw new NotFoundException("No drone found with the given serial number");
+    Drones drone = drones.get();
+    drone.setState(droneState);
+    dronesRepository.save(drone);
   }
 }
