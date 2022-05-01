@@ -9,11 +9,13 @@ import com.athanasius.droneservice.model.Drones;
 import com.athanasius.droneservice.model.Medication;
 import com.athanasius.droneservice.repository.DispatchRepository;
 import com.athanasius.droneservice.response.DispatchResponse;
+import com.athanasius.droneservice.response.DronesResponse;
 import com.athanasius.droneservice.services.DispatchService;
 import com.athanasius.droneservice.services.DronesService;
 import com.athanasius.droneservice.services.MedicationService;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +49,12 @@ public class DispatchServiceImpl implements DispatchService {
     try {
       Drones drones = dronesService.getDronesBySerialNo(dispatchDto.getDroneSerialNo()).getDrone();
       Medication medication = medicationService.getMedicationsByCode(dispatchDto.getMedicationCode()).getMedication();
+      if(!medication.getStatus()){
+        throw new BadRequestException("Medication is currently disabled");
+      }
       List<Dispatch> dispatchList = dispatchRepository.findByDrone(drones);
 
-      int droneUsedSpace = dispatchList.stream().map(Dispatch::getMedication).map(Medication::getWeight).mapToInt(Integer::intValue)
-          .sum();
+      int droneUsedSpace = getDroneUsedSpace(dispatchList);
       int droneAvailableSpace = drones.getWeightLimit().intValue() - droneUsedSpace;
       if(droneAvailableSpace < (droneUsedSpace + medication.getWeight())){
         throw new BadRequestException("Medication weight is higher than the drone's available space, kindly add a medication with weight below "+droneAvailableSpace);
@@ -94,6 +98,26 @@ public class DispatchServiceImpl implements DispatchService {
     List<Dispatch> dispatch = dispatchRepository.findByMedication(medicationService.getMedicationsByCode(medicationCode).getMedication());
     if(dispatch.isEmpty()) throw new NotFoundException("Medication is not yet added to any drone");
     return new DispatchResponse("00", "Records fetched", dispatch);
+  }
+
+  @Override
+  public DronesResponse getAvailableDrones() {
+    List<Drones> drones = dronesService.retrieveAllDrones().getDrones();
+    List<Drones> availableDrones = new ArrayList<>();
+    drones.forEach(drone -> {
+      List<Dispatch> dispatchList = dispatchRepository.findByDrone(drone);
+      int droneUsedSpace = getDroneUsedSpace(dispatchList);
+      int droneAvailableSpace = drone.getWeightLimit().intValue() - droneUsedSpace;
+      if(droneAvailableSpace > 10 && "IDLE,LOADING".contains(drone.getState().name())){
+        availableDrones.add(drone);
+      }
+    });
+    return new DronesResponse("00", "Records fetched", availableDrones);
+  }
+
+  private int getDroneUsedSpace(List<Dispatch> dispatchList){
+    return dispatchList.stream().map(Dispatch::getMedication).map(Medication::getWeight).mapToInt(Integer::intValue)
+        .sum();
   }
 
 }

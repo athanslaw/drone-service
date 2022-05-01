@@ -4,6 +4,7 @@ import com.athanasius.droneservice.dto.DispatchDto;
 import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.exception.NotFoundException;
 import com.athanasius.droneservice.response.DispatchResponse;
+import com.athanasius.droneservice.response.DronesResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,6 +59,12 @@ class DispatchServiceTest {
     }catch (NotFoundException e){
       Assertions.assertThat(e.getStatusCode()).isEqualTo("04");
     }
+  }
+
+  @Test
+  void viewAvailableDronesTest(){
+    DronesResponse dronesResponse = dispatchService.getAvailableDrones();
+    Assertions.assertThat(dronesResponse.getStatusCode()).isEqualTo("00");
   }
 
 }

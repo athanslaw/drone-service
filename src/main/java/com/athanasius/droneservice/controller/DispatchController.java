@@ -4,6 +4,7 @@ import com.athanasius.droneservice.dto.DispatchDto;
 import com.athanasius.droneservice.exception.BadRequestException;
 import com.athanasius.droneservice.exception.NotFoundException;
 import com.athanasius.droneservice.response.DispatchResponse;
+import com.athanasius.droneservice.response.DronesResponse;
 import com.athanasius.droneservice.services.DispatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,22 @@ public class DispatchController {
     }catch (NotFoundException ne){
       return new ResponseEntity<>(new DispatchResponse(ne.getStatusCode(),ne.getMessage()), HttpStatus.NOT_FOUND);
     }
+  }
+
+  @GetMapping(path= "/medication/{medicationCode}", produces = "application/json")
+  public ResponseEntity<DispatchResponse> viewDroneByMedication(@PathVariable String medicationCode) {
+    try{
+      DispatchResponse dispatchResponse = dispatchService.getDronesByMedication(medicationCode);
+      return new ResponseEntity<>(dispatchResponse, HttpStatus.OK);
+    }catch (NotFoundException ne){
+      return new ResponseEntity<>(new DispatchResponse(ne.getStatusCode(),ne.getMessage()), HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping(path= "/available-drones", produces = "application/json")
+  public ResponseEntity<DronesResponse> viewAvailableDronesForLoading() {
+    DronesResponse dronesResponse = dispatchService.getAvailableDrones();
+    return new ResponseEntity<>(dronesResponse, HttpStatus.OK);
   }
 
 }
