@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dispatch/api/v1")
+@RequestMapping("/dispatch")
 public class DispatchController {
 
   @Autowired
@@ -73,5 +73,6 @@ public class DispatchController {
     DronesResponse dronesResponse = dispatchService.getAvailableDrones();
     return new ResponseEntity<>(dronesResponse, HttpStatus.OK);
   }
+  // consider battery level
 
 }

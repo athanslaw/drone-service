@@ -48,6 +48,9 @@ public class DispatchServiceImpl implements DispatchService {
     Dispatch dispatch;
     try {
       Drones drones = dronesService.getDronesBySerialNo(dispatchDto.getDroneSerialNo()).getDrone();
+      if(drones.getBatteryCapacity() < 25){
+        throw new BadRequestException("Drone battery is low");
+      }
       Medication medication = medicationService.getMedicationsByCode(dispatchDto.getMedicationCode()).getMedication();
       if(!medication.getStatus()){
         throw new BadRequestException("Medication is currently disabled");

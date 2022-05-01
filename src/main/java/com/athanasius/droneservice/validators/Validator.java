@@ -21,6 +21,10 @@ public class Validator {
             throw new BadRequestException("Serial Number should not exceed 100 characters");
         }
 
+        if (dronesDto.getBatteryCapacity() > 100 || dronesDto.getBatteryCapacity() < 0) {
+            throw new BadRequestException("Battery capacity should be between 0 and 100");
+        }
+
         if (isNullOrEmptyString(dronesDto.getModel())) {
             throw new BadRequestException("Drone model is required");
         }
